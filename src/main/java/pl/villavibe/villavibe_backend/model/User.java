@@ -1,10 +1,13 @@
 package pl.villavibe.villavibe_backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import pl.villavibe.villavibe_backend.model.enums.Role;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -69,4 +72,13 @@ public class User {
     public void setLastUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
+
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+            name = "user_businesses",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "business_id")
+    )
+    private List<Business> businesses = new ArrayList<>();
 }
